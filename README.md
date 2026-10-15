@@ -52,12 +52,11 @@ backend authorization.
   matching confirmation.
 - API key secrets appear only immediately after creation and are never persisted
   by this UI. Admin endpoints cannot create keys for another user.
-- Email delivery requires the backend's SMTP configuration. The existing welcome
-  email points to the backend `/verify` endpoint, which returns a JSON result.
-  This frontend also accepts verification links at `/verify?code=…` and pasted
-  codes. To send users directly to this UI from verification emails, the email
-  link would need a separate backend/template change. The backend's password
-  reset redirect supports `FRONTEND_URL=http://localhost:5173` already.
+- Email delivery requires the backend's SMTP configuration. Set the backend's
+  `API_TITLE=CampusPoint` and `FRONTEND_URL=http://localhost:5173` for local use.
+  Verification and password reset emails open this frontend at `/verify?code=…`
+  and `/reset-password?code=…`. Use the deployed frontend URL in production.
+  If `FRONTEND_URL` is unset, email links use the backend's `BASE_URL` instead.
 - The backend's resend-verification endpoint is commented out; there is no resend
   button until that API exists.
 
