@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { api } from "./api";
 
 export function useResource(path) {
@@ -18,10 +18,11 @@ export function useResource(path) {
       active = false;
     };
   }, [path, version]);
-  function reload() {
-    setState((previous) => ({ ...previous, loading: true, error: "" }));
+  const reload = useCallback(({ background = false } = {}) => {
+    if (!background)
+      setState((previous) => ({ ...previous, loading: true, error: "" }));
     setVersion((value) => value + 1);
-  }
+  }, []);
   return { ...state, reload };
 }
 

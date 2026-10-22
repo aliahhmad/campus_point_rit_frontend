@@ -6,10 +6,11 @@ const API_BASE = (import.meta.env.VITE_API_BASE_URL || "/api").replace(
 let refreshRequest;
 
 export class ApiError extends Error {
-  constructor(message, status) {
+  constructor(message, status, detail = null) {
     super(message);
     this.name = "ApiError";
     this.status = status;
+    this.detail = detail;
   }
 }
 
@@ -51,13 +52,17 @@ function errorMessage(data, status) {
       )
       .join(". ");
   if (typeof data?.detail === "string") return data.detail;
+  if (typeof data?.detail?.message === "string") return data.detail.message;
   if (status === 429)
     return "Too many attempts. Please wait a moment and try again.";
   if (status === 403) return "You don’t have permission to do that.";
   return data?.message || `The request failed (${status}). Please try again.`;
 }
 
-async function send(path, { method = "GET", body, token, signal } = {}) {
+async function send(
+  path,
+  { method = "GET", body, token, signal, headers = {} } = {},
+) {
   let response;
   try {
     response = await fetch(`${API_BASE}${path}`, {
@@ -65,6 +70,7 @@ async function send(path, { method = "GET", body, token, signal } = {}) {
       signal,
       cache: "no-store",
       headers: {
+        ...headers,
         Accept: "application/json",
         ...(body !== undefined && { "Content-Type": "application/json" }),
         ...(token && { Authorization: `Bearer ${token}` }),
@@ -86,7 +92,11 @@ async function send(path, { method = "GET", body, token, signal } = {}) {
     /* Handle non-JSON errors below. */
   }
   if (!response.ok)
-    throw new ApiError(errorMessage(data, response.status), response.status);
+    throw new ApiError(
+      errorMessage(data, response.status),
+      response.status,
+      data?.detail,
+    );
   if (text && data === null)
     throw new ApiError(
       "The server returned an unexpected response. Please try again.",

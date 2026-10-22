@@ -11,6 +11,8 @@ import {
 import Profile from "./pages/Profile";
 import ApiKeys from "./pages/ApiKeys";
 import Users from "./pages/Users";
+import Requests from "./pages/Requests";
+import CreateRequest from "./pages/CreateRequest";
 
 export default function App() {
   return (
@@ -25,6 +27,8 @@ export default function App() {
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="reset-password" element={<ResetPassword />} />
             <Route element={<ProtectedRoute />}>
+              <Route path="requests" element={<Requests />} />
+              <Route path="requests/new" element={<CreateRequest />} />
               <Route path="profile" element={<Profile />} />
               <Route path="api-keys" element={<ApiKeys />} />
               <Route element={<ProtectedRoute admin />}>

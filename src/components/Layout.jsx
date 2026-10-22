@@ -137,6 +137,9 @@ export function Layout() {
               aria-label="Workspace navigation"
               className="nav flex-column gap-1"
             >
+              <NavLink to="/requests" className="nav-link" onClick={closeMenu}>
+                <span aria-hidden="true">▤</span> Campus requests
+              </NavLink>
               <NavLink to="/profile" className="nav-link" onClick={closeMenu}>
                 <span aria-hidden="true">◉</span> My profile
               </NavLink>
