@@ -161,7 +161,16 @@ export default function CreateRequest() {
                 : "The moderation check could not finish. Your request is pending and visible only to you."}
           </p>
           <div className="d-flex flex-wrap gap-2">
-            <Link to="/requests?mine=true" className="btn btn-primary">
+            <Link
+              to={`/requests/${result.request.id}`}
+              className="btn btn-primary"
+            >
+              View request
+            </Link>
+            <Link
+              to="/requests?mine=true"
+              className="btn btn-outline-secondary"
+            >
               View my requests
             </Link>
             <button

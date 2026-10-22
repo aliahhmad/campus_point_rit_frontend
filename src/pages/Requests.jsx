@@ -172,7 +172,7 @@ export default function Requests() {
             <div className="row g-3">
               {data.items.map((request) => (
                 <div className="col-12 col-xxl-6" key={request.id}>
-                  <Panel className="h-100">
+                  <Panel className="h-100 request-card">
                     <div className="d-flex flex-wrap gap-2 mb-3">
                       <span className="badge text-bg-light border">
                         {request.location_name} · {request.building_code}
@@ -193,7 +193,17 @@ export default function Requests() {
                         </span>
                       )}
                     </div>
-                    <h2 className="h5 text-break">{request.title}</h2>
+                    <h2 className="h5 text-break">
+                      <Link
+                        to={`/requests/${request.id}`}
+                        state={{
+                          from: `/requests${params.size ? `?${params}` : ""}`,
+                        }}
+                        className="request-title-link"
+                      >
+                        {request.title}
+                      </Link>
+                    </h2>
                     <p
                       className="text-break"
                       style={{ whiteSpace: "pre-wrap" }}
@@ -211,6 +221,16 @@ export default function Requests() {
                       <br />
                       Expires {formatDate(request.expires_at)}
                     </p>
+                    <Link
+                      to={`/requests/${request.id}`}
+                      state={{
+                        from: `/requests${params.size ? `?${params}` : ""}`,
+                      }}
+                      className="btn btn-sm btn-outline-secondary mt-3"
+                    >
+                      View request &amp; responses{" "}
+                      <span aria-hidden="true">→</span>
+                    </Link>
                   </Panel>
                 </div>
               ))}

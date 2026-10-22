@@ -418,6 +418,45 @@ textarea {
   padding: 4rem 1.5rem;
   text-align: center;
 }
+.request-title-link {
+  color: var(--bs-body-color);
+  text-decoration: none;
+}
+.request-title-link:hover {
+  color: var(--bs-link-color);
+  text-decoration: underline;
+}
+.request-content {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.8;
+}
+.page-title {
+  overflow-wrap: anywhere;
+}
+.request-facts > div {
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--bs-border-color);
+}
+.request-facts > div:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.request-facts dt {
+  color: var(--bs-secondary-color);
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+}
+.request-facts dd {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0;
+  overflow-wrap: anywhere;
+}
+.response-card {
+  scroll-margin-top: 1.5rem;
+}
 .empty-symbol {
   margin: 0 auto 1.5rem;
   width: 64px;

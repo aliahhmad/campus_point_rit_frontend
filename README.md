@@ -23,6 +23,9 @@ Open http://localhost:5173. The existing Vite proxy forwards `/api/*` to
 | `/forgot-password`          | Request a password reset email                                         |
 | `/reset-password?code=…`    | Reset password using the email token                                   |
 | `/profile`                  | View/edit profile and change password                                  |
+| `/requests`                 | Browse and filter campus requests                                      |
+| `/requests/new`             | Create a moderated campus request                                      |
+| `/requests/:requestId`      | View request information, read responses, and submit an answer         |
 | `/api-keys`                 | Create, rename, activate/deactivate, and delete personal API keys      |
 | `/admin/users`              | Paginated user list, search, editing, promotion, banning, and deletion |
 | `/admin/users/:userId/keys` | List, rename, activate/deactivate, and delete another user's keys      |
@@ -30,6 +33,18 @@ Open http://localhost:5173. The existing Vite proxy forwards `/api/*` to
 `/` opens the profile or redirects to sign in. Unknown routes display a 404 page.
 Admin routes require an administrator account. Their actions remain protected by
 backend authorization.
+
+Request cards and the creation confirmation link to individual request pages.
+Detail pages load `GET /requests/{id}` directly, so links also work after reload.
+Requests and responses refresh every five seconds. Response pagination is stored
+in the page URL, and returning to the feed preserves its filters.
+
+Other contributors can submit one answer to a visible, open, unexpired request.
+The form checks `GET /requests/{id}/responses?mine=true&size=1` for an existing
+answer. Hidden and pending answers remain visible only to their contributor.
+Unconfirmed submissions keep their original idempotency key and answer in
+session storage; users can leave and return in the same tab to resume polling or
+safely retry after a network failure. Posting an answer does not involve Points.
 
 ## API and authentication
 
