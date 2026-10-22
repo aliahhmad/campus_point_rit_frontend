@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useAuth } from "../auth/context";
 import { api } from "../lib/api";
-import { validatePassword } from "../lib/hooks";
+import { useResource, validatePassword } from "../lib/hooks";
 import {
   Alert,
   Field,
+  Loading,
   PageHeading,
   Panel,
   PasswordField,
+  ResourceError,
   Submit,
 } from "../components/UI";
 
@@ -152,6 +154,45 @@ function ChangePassword({ userId }) {
   );
 }
 
+function ProfileWallet() {
+  const { data, loading, error, reload } = useResource("/wallet/me");
+
+  return (
+    <Panel title="My points and reputation" className="mt-4">
+      {loading ? (
+        <Loading label="Loading your points and reputation…" />
+      ) : error ? (
+        <ResourceError error={error} retry={reload} />
+      ) : (
+        <div role="status" aria-live="polite">
+          <p className="display-5 fw-semibold text-primary mb-1">
+            {data.available_points.toLocaleString()}
+          </p>
+          <p className="fw-semibold mb-2">Available points</p>
+          <p className="text-secondary small">
+            Creating a request reserves 5 points.
+          </p>
+          <hr />
+          <p className="display-5 fw-semibold text-success mb-1">
+            {data.reputation.toLocaleString()}
+          </p>
+          <p className="fw-semibold mb-3">Reputation</p>
+        </div>
+      )}
+      {!error && (
+        <button
+          type="button"
+          className="btn btn-sm btn-outline-secondary"
+          onClick={reload}
+          disabled={loading}
+        >
+          Refresh
+        </button>
+      )}
+    </Panel>
+  );
+}
+
 export default function Profile() {
   const { user, reloadUser } = useAuth();
   return (
@@ -202,6 +243,7 @@ export default function Profile() {
               </div>
             </dl>
           </Panel>
+          <ProfileWallet />
         </div>
       </div>
     </>
