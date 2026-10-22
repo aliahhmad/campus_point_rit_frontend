@@ -158,7 +158,7 @@ export default function CreateRequest() {
               ? "Your request is visible in the campus feed."
               : result.request.moderation_status === "hidden"
                 ? "Your request is hidden from the campus feed. You can see it in your requests."
-                : "It is pending moderation. You can see it in your requests now."}
+                : "The moderation check could not finish. Your request is pending and visible only to you."}
           </p>
           <div className="d-flex flex-wrap gap-2">
             <Link to="/requests?mine=true" className="btn btn-primary">
@@ -304,8 +304,9 @@ export default function CreateRequest() {
               <p>Each request expires one hour after creation.</p>
               <p className="small text-secondary mb-0">
                 Requests are checked for abusive words. Requests that pass are
-                visible in the campus feed; flagged requests stay pending and
-                are visible only to you.
+                visible in the campus feed; flagged requests are hidden. If the
+                check fails, your request stays pending. Hidden and pending
+                requests are visible only to you.
               </p>
             </Panel>
           </div>
