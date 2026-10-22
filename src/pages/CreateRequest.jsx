@@ -303,8 +303,9 @@ export default function CreateRequest() {
               </p>
               <p>Each request expires one hour after creation.</p>
               <p className="small text-secondary mb-0">
-                New requests start pending moderation. Only you can see your
-                request until it becomes visible.
+                Requests are checked for abusive words. Requests that pass are
+                visible in the campus feed; flagged requests stay pending and
+                are visible only to you.
               </p>
             </Panel>
           </div>
