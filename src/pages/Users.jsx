@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useAuth } from "../auth/context";
 import { api } from "../lib/api";
 import { useResource } from "../lib/hooks";
@@ -26,12 +26,12 @@ const actionCopy = {
   ],
   "make-admin": [
     "Make administrator?",
-    "This user will be able to manage other users and resolve conflicted requests.",
+    "This user will be able to manage other users and their API keys.",
     "Make administrator",
   ],
   delete: [
     "Delete user?",
-    "The account will be permanently deleted. This cannot be undone.",
+    "The account and its API keys will be permanently deleted. This cannot be undone.",
     "Delete user",
   ],
 };
@@ -279,9 +279,6 @@ function UserResults({ path, page, term, onPage, onAction, currentUserId }) {
                   <th scope="col">Role</th>
                   <th scope="col">Status</th>
                   <th scope="col" className="text-end">
-                    Violations
-                  </th>
-                  <th scope="col" className="text-end">
                     Actions
                   </th>
                 </tr>
@@ -324,9 +321,6 @@ function UserResults({ path, page, term, onPage, onAction, currentUserId }) {
                         )}
                       </div>
                     </td>
-                    <td className="text-end fw-semibold">
-                      {(account.violations ?? 0).toLocaleString()}
-                    </td>
                     <td>
                       <div className="d-flex justify-content-end gap-2 flex-wrap">
                         <button
@@ -338,6 +332,13 @@ function UserResults({ path, page, term, onPage, onAction, currentUserId }) {
                         >
                           Edit
                         </button>
+                        <Link
+                          className="btn btn-sm btn-outline-secondary"
+                          to={`/admin/users/${account.id}/keys`}
+                          aria-label={`API keys for ${account.email}`}
+                        >
+                          API keys
+                        </Link>
                         {account.role !== "admin" && (
                           <button
                             className="btn btn-sm btn-outline-secondary"

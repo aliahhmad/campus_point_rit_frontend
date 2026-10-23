@@ -1,18 +1,15 @@
 const STORAGE_KEY = "campuspoint.session";
-// Leave the URL blank to use the local Vite proxy. Set it before building
-// to send requests directly to a hosted backend instead.
-const API_BASE = (import.meta.env.VITE_API_BASE_URL?.trim() || "/api").replace(
-  /\/+$/,
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || "/api").replace(
+  /\/$/,
   "",
 );
 let refreshRequest;
 
 export class ApiError extends Error {
-  constructor(message, status, detail = null) {
+  constructor(message, status) {
     super(message);
     this.name = "ApiError";
     this.status = status;
-    this.detail = detail;
   }
 }
 
@@ -54,17 +51,13 @@ function errorMessage(data, status) {
       )
       .join(". ");
   if (typeof data?.detail === "string") return data.detail;
-  if (typeof data?.detail?.message === "string") return data.detail.message;
   if (status === 429)
     return "Too many attempts. Please wait a moment and try again.";
   if (status === 403) return "You don’t have permission to do that.";
   return data?.message || `The request failed (${status}). Please try again.`;
 }
 
-async function send(
-  path,
-  { method = "GET", body, token, signal, headers = {} } = {},
-) {
+async function send(path, { method = "GET", body, token, signal } = {}) {
   let response;
   try {
     response = await fetch(`${API_BASE}${path}`, {
@@ -72,7 +65,6 @@ async function send(
       signal,
       cache: "no-store",
       headers: {
-        ...headers,
         Accept: "application/json",
         ...(body !== undefined && { "Content-Type": "application/json" }),
         ...(token && { Authorization: `Bearer ${token}` }),
@@ -94,11 +86,7 @@ async function send(
     /* Handle non-JSON errors below. */
   }
   if (!response.ok)
-    throw new ApiError(
-      errorMessage(data, response.status),
-      response.status,
-      data?.detail,
-    );
+    throw new ApiError(errorMessage(data, response.status), response.status);
   if (text && data === null)
     throw new ApiError(
       "The server returned an unexpected response. Please try again.",

@@ -1,35 +1,27 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "./api";
 
 export function useResource(path) {
-  const [state, setState] = useState({
-    path,
-    data: null,
-    loading: true,
-    error: "",
-  });
+  const [state, setState] = useState({ data: null, loading: true, error: "" });
   const [version, setVersion] = useState(0);
   useEffect(() => {
     let active = true;
     api(path)
       .then((data) => {
-        if (active) setState({ path, data, loading: false, error: "" });
+        if (active) setState({ data, loading: false, error: "" });
       })
       .catch((error) => {
         if (active)
-          setState({ path, data: null, loading: false, error: error.message });
+          setState({ data: null, loading: false, error: error.message });
       });
     return () => {
       active = false;
     };
   }, [path, version]);
-  const reload = useCallback(({ background = false } = {}) => {
-    if (!background)
-      setState((previous) => ({ ...previous, loading: true, error: "" }));
+  function reload() {
+    setState((previous) => ({ ...previous, loading: true, error: "" }));
     setVersion((value) => value + 1);
-  }, []);
-  if (state.path !== path)
-    return { data: null, loading: true, error: "", reload };
+  }
   return { ...state, reload };
 }
 

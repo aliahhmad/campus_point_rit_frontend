@@ -23,21 +23,6 @@ export function Loading({ label = "Loading…" }) {
   );
 }
 
-export function RequestStatusBadge({ status }) {
-  const color =
-    status === "conflicted"
-      ? "text-bg-warning"
-      : status === "open"
-        ? "text-bg-success"
-        : "text-bg-light border";
-  const label = status.replaceAll("_", " ");
-  return (
-    <span className={`badge ${color}`}>
-      {label.charAt(0).toUpperCase() + label.slice(1)}
-    </span>
-  );
-}
-
 export function Field({ label, hint, ...props }) {
   const id = useId();
   return (
