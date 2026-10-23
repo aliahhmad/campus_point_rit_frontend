@@ -7,19 +7,45 @@ import {
 } from "react-router-dom";
 import { useAuth } from "../auth/context";
 import { formatDate, useResource } from "../lib/hooks";
+import useResponseAcceptance from "../lib/useResponseAcceptance";
 import ResponseForm from "../components/ResponseForm";
 import {
   Alert,
   Loading,
+  Modal,
   PageHeading,
   Panel,
   ResourceError,
 } from "../components/UI";
 
-function Responses({ requestId, page, onPageChange, version }) {
+function Responses({
+  request,
+  expired,
+  page,
+  onPageChange,
+  version,
+  onSettled,
+}) {
   const { user } = useAuth();
+  const ownRequest = request.requester_id === user.id;
+  const [selection, setSelection] = useState(null);
+  const acceptance = useResponseAcceptance({
+    requestId: request.id,
+    userId: user.id,
+    enabled: ownRequest,
+    onSettled,
+  });
+  const acceptedId =
+    acceptance.result?.request.accepted_response_id ||
+    request.accepted_response_id;
+  const canAccept =
+    ownRequest &&
+    !acceptedId &&
+    !expired &&
+    request.moderation_status === "visible" &&
+    ["open", "under_review"].includes(request.status);
   const { data, loading, error, reload } = useResource(
-    `/requests/${requestId}/responses?page=${page}&size=20`,
+    `/requests/${request.id}/responses?page=${page}&size=20`,
   );
 
   useEffect(() => {
@@ -30,6 +56,17 @@ function Responses({ requestId, page, onPageChange, version }) {
   useEffect(() => {
     if (version) reload({ background: true });
   }, [version, reload]);
+
+  function confirmSelection(event) {
+    event.preventDefault();
+    if (!canAccept || new Date(request.expires_at).getTime() <= Date.now()) {
+      setSelection(null);
+      onSettled();
+      return;
+    }
+    acceptance.accept(selection.id);
+    setSelection(null);
+  }
 
   return (
     <section aria-labelledby="responses-heading">
@@ -51,6 +88,53 @@ function Responses({ requestId, page, onPageChange, version }) {
           Refresh responses
         </button>
       </div>
+      <Alert>{acceptance.error}</Alert>
+      {acceptance.pending ? (
+        <Alert type="info">
+          <p className="mb-2">
+            {acceptance.busy
+              ? "Confirming your selection…"
+              : acceptance.error
+                ? "We could not confirm the outcome. Check this selection before choosing another response."
+                : acceptance.pending.operationId
+                  ? "Your selection is being processed. We will check again in 5 seconds."
+                  : "Your selection is awaiting confirmation. Retry it to check the outcome."}
+          </p>
+          <p className="small mb-2">
+            Response #{acceptance.pending.responseId} · You can return in this
+            browser tab to resume.
+          </p>
+          <button
+            type="button"
+            className="btn btn-sm btn-outline-primary"
+            disabled={acceptance.busy}
+            onClick={acceptance.retry}
+          >
+            {acceptance.pending.operationId
+              ? "Check acceptance status"
+              : "Retry acceptance"}
+          </button>
+        </Alert>
+      ) : acceptance.result ? (
+        <Alert type="success">
+          Response #{acceptedId} accepted. {acceptance.result.reward_points}{" "}
+          points awarded to Contributor #{acceptance.result.recipient_id}.
+        </Alert>
+      ) : acceptedId ? (
+        <Alert type="success">
+          The request owner selected response #{acceptedId}.
+        </Alert>
+      ) : ownRequest ? (
+        <Alert type="info">
+          {canAccept
+            ? `Accept one response to complete your request and award its contributor ${request.reward_points} points. This selection is final.`
+            : expired
+              ? "This request has expired. Responses can no longer be accepted."
+              : request.moderation_status !== "visible"
+                ? "Responses can be accepted once this request is published."
+                : "This request is closed. Responses can no longer be accepted."}
+        </Alert>
+      ) : null}
       {loading ? (
         <Loading label="Loading responses…" />
       ) : error ? (
@@ -61,7 +145,7 @@ function Responses({ requestId, page, onPageChange, version }) {
             <div className="d-flex flex-column gap-3">
               {data.items.map((response) => (
                 <article
-                  className="card response-card"
+                  className={`card response-card ${acceptedId === response.id && !acceptance.pending ? "border-success" : ""}`}
                   key={response.id}
                   id={`response-${response.id}`}
                 >
@@ -72,6 +156,11 @@ function Responses({ requestId, page, onPageChange, version }) {
                           ? "Your response"
                           : `Contributor #${response.contributor_id}`}
                       </h3>
+                      {acceptedId === response.id && !acceptance.pending && (
+                        <span className="badge text-bg-success">
+                          Accepted response
+                        </span>
+                      )}
                       {response.moderation_status !== "visible" && (
                         <span
                           className={`badge ${response.moderation_status === "hidden" ? "text-bg-danger" : "text-bg-warning"}`}
@@ -86,6 +175,23 @@ function Responses({ requestId, page, onPageChange, version }) {
                     <p className="small text-secondary mb-0">
                       Posted {formatDate(response.created_at)}
                     </p>
+                    {canAccept &&
+                      response.moderation_status === "visible" &&
+                      response.contributor_id !== user.id && (
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary mt-3"
+                          disabled={
+                            Boolean(acceptance.pending) || acceptance.busy
+                          }
+                          aria-label={`Accept response from Contributor #${response.contributor_id}`}
+                          onClick={() => setSelection(response)}
+                        >
+                          {acceptance.pending?.responseId === response.id
+                            ? "Acceptance pending…"
+                            : "Accept response"}
+                        </button>
+                      )}
                   </div>
                 </article>
               ))}
@@ -127,6 +233,43 @@ function Responses({ requestId, page, onPageChange, version }) {
             </nav>
           )}
         </>
+      )}
+      {selection && (
+        <Modal title="Accept this response?" onClose={() => setSelection(null)}>
+          <p>
+            Complete your request and award {request.reward_points} points to
+            Contributor #{selection.contributor_id}. You cannot change the
+            selected response afterward.
+          </p>
+          <blockquote className="request-content border-start ps-3">
+            {selection.answer}
+          </blockquote>
+          {!canAccept && (
+            <Alert type="warning">
+              This request is no longer available for acceptance.
+            </Alert>
+          )}
+          <form onSubmit={confirmSelection}>
+            <div className="d-flex flex-wrap justify-content-end gap-2">
+              <button
+                type="button"
+                className="btn btn-outline-secondary"
+                onClick={() => setSelection(null)}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={
+                  !canAccept || Boolean(acceptance.pending) || acceptance.busy
+                }
+              >
+                Accept &amp; award {request.reward_points} points
+              </button>
+            </div>
+          </form>
+        </Modal>
       )}
     </section>
   );
@@ -174,6 +317,11 @@ function RequestPage({ requestId }) {
     setVersion((value) => value + 1);
   }, [setVersion]);
 
+  const onAcceptanceSettled = useCallback(() => {
+    reload({ background: true });
+    setVersion((value) => value + 1);
+  }, [reload]);
+
   function changePage(value) {
     const next = new URLSearchParams(params);
     if (value === 1) next.delete("page");
@@ -218,7 +366,9 @@ function RequestPage({ requestId }) {
   const ownRequest = request.requester_id === user.id;
   const expired = new Date(request.expires_at).getTime() <= now;
   const status =
-    request.status === "open" && expired ? "expired" : request.status;
+    ["open", "under_review"].includes(request.status) && expired
+      ? "expired"
+      : request.status;
 
   return (
     <>
@@ -276,10 +426,13 @@ function RequestPage({ requestId }) {
             />
           )}
           <Responses
-            requestId={request.id}
+            key={`responses:${user.id}:${request.id}`}
+            request={request}
+            expired={expired}
             page={page}
             onPageChange={changePage}
             version={version}
+            onSettled={onAcceptanceSettled}
           />
         </div>
         <aside className="col-xl-4">
@@ -308,6 +461,12 @@ function RequestPage({ requestId }) {
                 <dt>Created</dt>
                 <dd>{formatDate(request.created_at)}</dd>
               </div>
+              {request.accepted_at && (
+                <div>
+                  <dt>Accepted</dt>
+                  <dd>{formatDate(request.accepted_at)}</dd>
+                </div>
+              )}
               <div>
                 <dt>{expired ? "Expired" : "Expires"}</dt>
                 <dd>{formatDate(request.expires_at)}</dd>

@@ -25,7 +25,7 @@ Open http://localhost:5173. The existing Vite proxy forwards `/api/*` to
 | `/profile`                  | View/edit profile and change password                                  |
 | `/requests`                 | Browse and filter campus requests                                      |
 | `/requests/new`             | Create a moderated campus request                                      |
-| `/requests/:requestId`      | View request information, read responses, and submit an answer         |
+| `/requests/:requestId`      | Read request responses, submit an answer, or accept one on your own post |
 | `/api-keys`                 | Create, rename, activate/deactivate, and delete personal API keys      |
 | `/admin/users`              | Paginated user list, search, editing, promotion, banning, and deletion |
 | `/admin/users/:userId/keys` | List, rename, activate/deactivate, and delete another user's keys      |
@@ -45,6 +45,20 @@ answer. Hidden and pending answers remain visible only to their contributor.
 Unconfirmed submissions keep their original idempotency key and answer in
 session storage; users can leave and return in the same tab to resume polling or
 safely retry after a network failure. Posting an answer does not involve Points.
+
+Request owners can accept one visible response on a published, unexpired request
+with status `open` or `under_review`. Each answer has an **Accept response** button
+and a confirmation showing the contributor and reward. Acceptance completes the
+request and awards the existing five-point reward. The selected answer displays
+an **Accepted response** badge for all viewers.
+
+Acceptance calls `POST /requests/{id}/responses/{responseId}/accept` with an
+idempotency key. Processing operations poll `GET /operations/{operationId}` every
+five seconds; the UI confirms the reward only after the operation completes.
+Pending selections survive reloads in the same tab, retain their original key
+for uncertain retries, and prevent another selection until resolved. A confirmed
+aborted attempt allows a fresh selection. Expired and closed posts cannot accept
+new responses; already-started operations can still be checked or retried.
 
 ## API and authentication
 
