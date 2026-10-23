@@ -298,6 +298,30 @@ export default function CreateRequest() {
                         characters
                       </div>
                     </div>
+                    <Alert type="warning">
+                      <strong className="d-block mb-2">
+                        Before you create this request
+                      </strong>
+                      <p className="mb-2">
+                        <strong>5 points will be held in escrow</strong> during
+                        the request’s <strong>1-hour response period</strong>.
+                        Accepting a response earlier awards those points to its
+                        contributor.
+                      </p>
+                      <p className="mb-2">
+                        <strong>
+                          You cannot edit or delete the request after creating
+                          it.
+                        </strong>{" "}
+                        Review your location, title, and description before
+                        submitting.
+                      </p>
+                      <p className="small mb-0">
+                        If no one responds before expiry, your points are
+                        refunded. If responses exist but none is accepted, the
+                        request becomes conflicted and the points stay held.
+                      </p>
+                    </Alert>
                     <Submit busy={busy}>Create request · 5 points</Submit>
                   </fieldset>
                 </form>
