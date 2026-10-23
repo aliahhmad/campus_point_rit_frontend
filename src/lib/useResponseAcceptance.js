@@ -17,6 +17,12 @@ function restoreSelection(storageKey) {
 function failureMessage(code, fallback) {
   return (
     {
+      admin_required:
+        "Administrator access is required to resolve this conflict.",
+      request_not_conflicted:
+        "This request is no longer conflicted. Refresh to see its current status.",
+      request_not_expired:
+        "This request cannot be resolved before its expiry time.",
       request_owner_required: "Only the request owner can accept a response.",
       request_already_accepted:
         "A response has already been accepted. Refresh to see it.",

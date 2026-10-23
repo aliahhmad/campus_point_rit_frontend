@@ -29,22 +29,25 @@ function Responses({
 }) {
   const { user } = useAuth();
   const ownRequest = request.requester_id === user.id;
+  const resolvingConflict = user.isAdmin && request.status === "conflicted";
   const [selection, setSelection] = useState(null);
   const acceptance = useResponseAcceptance({
     requestId: request.id,
     userId: user.id,
-    enabled: ownRequest,
+    enabled: ownRequest || user.isAdmin,
     onSettled,
   });
   const acceptedId =
     acceptance.result?.request.accepted_response_id ||
     request.accepted_response_id;
   const canAccept =
-    ownRequest &&
     !acceptedId &&
-    !expired &&
-    request.moderation_status === "visible" &&
-    ["open", "under_review"].includes(request.status);
+    (resolvingConflict
+      ? expired
+      : ownRequest &&
+        !expired &&
+        request.moderation_status === "visible" &&
+        ["open", "under_review"].includes(request.status));
   const { data, loading, error, reload } = useResource(
     `/requests/${request.id}/responses?page=${page}&size=20`,
   );
@@ -60,7 +63,11 @@ function Responses({
 
   function confirmSelection(event) {
     event.preventDefault();
-    if (!canAccept || new Date(request.expires_at).getTime() <= Date.now()) {
+    if (
+      !canAccept ||
+      (!resolvingConflict &&
+        new Date(request.expires_at).getTime() <= Date.now())
+    ) {
       setSelection(null);
       onSettled();
       return;
@@ -119,11 +126,16 @@ function Responses({
       ) : acceptance.result ? (
         <Alert type="success">
           Response #{acceptedId} accepted. {acceptance.result.reward_points}{" "}
-          points awarded to Contributor #{acceptance.result.recipient_id}.
+          points and +1 reputation awarded to Contributor #
+          {acceptance.result.recipient_id}.
         </Alert>
       ) : acceptedId ? (
-        <Alert type="success">
-          The request owner selected response #{acceptedId}.
+        <Alert type="success">Response #{acceptedId} has been accepted.</Alert>
+      ) : resolvingConflict && canAccept ? (
+        <Alert type="info">
+          As an administrator, you can accept one visible response to resolve
+          this conflict and award its contributor {request.reward_points} points
+          and +1 reputation. This selection is final.
         </Alert>
       ) : ownRequest && request.status !== "conflicted" ? (
         <Alert type="info">
@@ -178,7 +190,7 @@ function Responses({
                     </p>
                     {canAccept &&
                       response.moderation_status === "visible" &&
-                      response.contributor_id !== user.id && (
+                      response.contributor_id !== request.requester_id && (
                         <button
                           type="button"
                           className="btn btn-outline-primary mt-3"
@@ -238,7 +250,10 @@ function Responses({
       {selection && (
         <Modal title="Accept this response?" onClose={() => setSelection(null)}>
           <p>
-            Complete your request and award {request.reward_points} points to
+            {resolvingConflict
+              ? "Resolve this conflict by completing the request"
+              : "Complete your request"}{" "}
+            and award {request.reward_points} points and +1 reputation to
             Contributor #{selection.contributor_id}. You cannot change the
             selected response afterward.
           </p>
@@ -420,9 +435,10 @@ function RequestPage({ requestId }) {
             <Alert type="warning">
               <strong className="d-block mb-1">Conflicted request</strong>
               This request expired with visible responses and no accepted
-              answer. Its {request.reward_points}-point reward remains held. You
-              can no longer post or accept responses. Existing responses are
-              still available to read.
+              answer. Its {request.reward_points}-point reward remains held.{" "}
+              {user.isAdmin
+                ? "You can accept a visible response below to resolve this conflict."
+                : "You can no longer post or accept responses. Existing responses are still available to read."}
             </Alert>
           )}
           {request.moderation_status !== "visible" && (
