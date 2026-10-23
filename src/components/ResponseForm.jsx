@@ -147,7 +147,10 @@ export default function ResponseForm({ request, expired, onSubmitted }) {
 
   const existing = result || ownData?.items[0];
   let unavailable = "";
-  if (request.moderation_status !== "visible")
+  if (request.status === "conflicted")
+    unavailable =
+      "This request is conflicted. You can still read its responses.";
+  else if (request.moderation_status !== "visible")
     unavailable =
       "This request is not accepting responses while it is unpublished.";
   else if (expired)

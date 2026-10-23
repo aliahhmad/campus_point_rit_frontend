@@ -39,6 +39,13 @@ Detail pages load `GET /requests/{id}` directly, so links also work after reload
 Requests and responses refresh every five seconds. Response pagination is stored
 in the page URL, and returning to the feed preserves its filters.
 
+The status filter includes **Conflicted**, sent as `status=conflicted` to the API.
+List cards and detail pages share a yellow **Conflicted** badge and explain that
+the request expired with responses and no accepted answer, so its reward remains
+held. Existing responses stay readable, while new answers and acceptance are
+closed. The UI uses the backend's stored status to identify conflicts; a passed
+deadline alone does not imply a conflict or confirm a refund.
+
 Other contributors can submit one answer to a visible, open, unexpired request.
 The form checks `GET /requests/{id}/responses?mine=true&size=1` for an existing
 answer. Hidden and pending answers remain visible only to their contributor.

@@ -2,12 +2,19 @@ import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useAuth } from "../auth/context";
 import { formatDate, useResource } from "../lib/hooks";
-import { Loading, PageHeading, Panel, ResourceError } from "../components/UI";
+import {
+  Loading,
+  PageHeading,
+  Panel,
+  RequestStatusBadge,
+  ResourceError,
+} from "../components/UI";
 
-const statuses = ["open", "under_review", "completed", "expired"];
+const statuses = ["open", "under_review", "completed", "expired", "conflicted"];
 
 function label(value) {
-  return value.replaceAll("_", " ");
+  const text = value.replaceAll("_", " ");
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 export default function Requests() {
@@ -159,9 +166,15 @@ export default function Requests() {
           {!data.items.length ? (
             <Panel>
               <div className="text-center py-4">
-                <h2 className="h5">No requests found</h2>
+                <h2 className="h5">
+                  {params.get("status") === "conflicted"
+                    ? "No conflicted requests found"
+                    : "No requests found"}
+                </h2>
                 <p className="text-secondary">
-                  Try different filters or ask a new campus question.
+                  {params.get("status") === "conflicted"
+                    ? "Requests that expire with responses and no accepted answer appear here."
+                    : "Try different filters or ask a new campus question."}
                 </p>
                 <Link to="/requests/new" className="btn btn-primary">
                   Create a request
@@ -177,9 +190,7 @@ export default function Requests() {
                       <span className="badge text-bg-light border">
                         {request.location_name} · {request.building_code}
                       </span>
-                      <span className="badge text-bg-light border text-capitalize">
-                        {label(request.status)}
-                      </span>
+                      <RequestStatusBadge status={request.status} />
                       {request.requester_id === user.id && (
                         <span className="badge text-bg-primary">
                           Your request
@@ -212,14 +223,21 @@ export default function Requests() {
                     </p>
                     <div className="d-flex flex-wrap justify-content-between gap-2 small text-secondary border-top pt-3">
                       <span className="fw-semibold text-primary">
-                        {request.reward_points} point reward
+                        {request.reward_points}
+                        {request.status === "conflicted"
+                          ? " points held"
+                          : " point reward"}
                       </span>
                       <span>Request #{request.id}</span>
                     </div>
                     <p className="small text-secondary mt-2 mb-0">
                       Created {formatDate(request.created_at)}
                       <br />
-                      Expires {formatDate(request.expires_at)}
+                      {request.status === "conflicted" ||
+                      request.status === "expired"
+                        ? "Expired"
+                        : "Expires"}{" "}
+                      {formatDate(request.expires_at)}
                     </p>
                     <Link
                       to={`/requests/${request.id}`}

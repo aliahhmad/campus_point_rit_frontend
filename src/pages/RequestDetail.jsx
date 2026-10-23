@@ -15,6 +15,7 @@ import {
   Modal,
   PageHeading,
   Panel,
+  RequestStatusBadge,
   ResourceError,
 } from "../components/UI";
 
@@ -124,7 +125,7 @@ function Responses({
         <Alert type="success">
           The request owner selected response #{acceptedId}.
         </Alert>
-      ) : ownRequest ? (
+      ) : ownRequest && request.status !== "conflicted" ? (
         <Alert type="info">
           {canAccept
             ? `Accept one response to complete your request and award its contributor ${request.reward_points} points. This selection is final.`
@@ -386,11 +387,7 @@ function RequestPage({ requestId }) {
         <div className="col-xl-8">
           <Panel title="Request details" className="mb-4">
             <div className="d-flex flex-wrap gap-2 mb-3">
-              <span
-                className={`badge text-capitalize ${status === "open" ? "text-bg-success" : "text-bg-light border"}`}
-              >
-                {status.replaceAll("_", " ")}
-              </span>
+              <RequestStatusBadge status={status} />
               {ownRequest && (
                 <span className="badge text-bg-primary">Your request</span>
               )}
@@ -406,6 +403,15 @@ function RequestPage({ requestId }) {
             </div>
             <p className="request-content mb-0">{request.description}</p>
           </Panel>
+          {request.status === "conflicted" && (
+            <Alert type="warning">
+              <strong className="d-block mb-1">Conflicted request</strong>
+              This request expired with responses and no accepted answer. Its{" "}
+              {request.reward_points}-point reward remains held. You can no
+              longer post or accept responses. Existing responses are still
+              available to read.
+            </Alert>
+          )}
           {request.moderation_status !== "visible" && (
             <Alert type="warning">
               {request.moderation_status === "hidden"
@@ -414,9 +420,11 @@ function RequestPage({ requestId }) {
             </Alert>
           )}
           {ownRequest ? (
-            <Alert type="info">
-              This is your request. Only other contributors can answer it.
-            </Alert>
+            request.status !== "conflicted" && (
+              <Alert type="info">
+                This is your request. Only other contributors can answer it.
+              </Alert>
+            )
           ) : (
             <ResponseForm
               key={`${user.id}:${request.id}`}
@@ -455,7 +463,14 @@ function RequestPage({ requestId }) {
               </div>
               <div>
                 <dt>Reward</dt>
-                <dd className="text-primary">{request.reward_points} points</dd>
+                <dd className="text-primary">
+                  {request.reward_points} points
+                  {request.status === "conflicted" && (
+                    <span className="d-block small fw-normal text-secondary">
+                      Held for this conflicted request
+                    </span>
+                  )}
+                </dd>
               </div>
               <div>
                 <dt>Created</dt>
