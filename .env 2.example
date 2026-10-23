@@ -1,0 +1,9 @@
+# Hosted backend is disabled while this value is blank.
+# Local development uses /api and the proxy in vite.config.js.
+VITE_API_BASE_URL=
+
+# To enable: copy this file to .env.local, enter your backend's public HTTPS
+# address above, and restart npm run dev or rebuild the frontend.
+# Example: VITE_API_BASE_URL=https://your-backend.example.com
+# Include the backend API prefix if configured, such as /v1.
+# This address is public in the frontend build. Never put secrets here.
