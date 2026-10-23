@@ -76,7 +76,7 @@ export function Layout() {
       <a className="visually-hidden-focusable skip-link" href="#main-content">
         Skip to content
       </a>
-      <header className="topbar navbar navbar-expand-md">
+      <header className="topbar navbar navbar-expand-lg">
         <div className="container-fluid px-3 px-lg-4">
           <Link className="navbar-brand brand" to="/" onClick={closeMenu}>
             <span className="brand-mark" aria-hidden="true">
@@ -103,55 +103,73 @@ export function Layout() {
             aria-label="Main navigation"
             className={`collapse navbar-collapse ${open ? "show" : ""}`}
           >
-            <div className="navbar-nav ms-auto align-items-md-center gap-2">
-              {isHomepage ? (
-                <>
-                  <a className="nav-link" href="#how-it-works" onClick={closeMenu}>
-                    How it works
-                  </a>
-                  <a className="nav-link me-md-3" href="#technology" onClick={closeMenu}>
-                    The technology
-                  </a>
-                </>
-              ) : (
-                <NavLink className="nav-link" to="/" onClick={closeMenu}>
-                  Home
-                </NavLink>
-              )}
-              {user ? (
-                <>
-                  {isHomepage && (
-                    <Link className="btn btn-primary btn-sm" to="/requests" onClick={closeMenu}>
-                      Open workspace <span aria-hidden="true">↗</span>
-                    </Link>
-                  )}
-                  <span className="small text-secondary me-md-3">
-                    {user.first_name} {user.last_name}
-                  </span>
-                  <span className="avatar d-none d-md-grid" aria-hidden="true">
-                    {initials}
-                  </span>
-                  <button
-                    className="btn btn-sm btn-outline-secondary ms-md-2"
-                    onClick={signOut}
-                  >
-                    Sign out
-                  </button>
-                </>
-              ) : (
-                <>
-                  <NavLink className="nav-link" to="/signin" onClick={closeMenu}>
-                    Sign in
+            <div className="topbar-nav">
+              <div className="navbar-nav topbar-links">
+                {isHomepage ? (
+                  <>
+                    <a
+                      className="nav-link"
+                      href="#how-it-works"
+                      onClick={closeMenu}
+                    >
+                      How it works
+                    </a>
+                    <a
+                      className="nav-link"
+                      href="#technology"
+                      onClick={closeMenu}
+                    >
+                      The technology
+                    </a>
+                  </>
+                ) : (
+                  <NavLink className="nav-link" to="/" onClick={closeMenu}>
+                    Home
                   </NavLink>
-                  <Link
-                    className="btn btn-primary btn-sm px-3"
-                    to="/register"
-                    onClick={closeMenu}
-                  >
-                    Create account <span aria-hidden="true">↗</span>
-                  </Link>
-                </>
-              )}
+                )}
+              </div>
+              <div className="topbar-actions">
+                {user ? (
+                  <>
+                    {isHomepage && (
+                      <Link
+                        className="btn btn-primary btn-sm"
+                        to="/requests"
+                        onClick={closeMenu}
+                      >
+                        Open workspace <span aria-hidden="true">↗</span>
+                      </Link>
+                    )}
+                    <div className="topbar-account">
+                      <span className="topbar-name small text-secondary">
+                        {user.first_name} {user.last_name}
+                      </span>
+                      <span className="avatar" aria-hidden="true">
+                        {initials}
+                      </span>
+                    </div>
+                    <button
+                      className="btn btn-sm btn-outline-secondary"
+                      onClick={signOut}
+                    >
+                      Sign out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <NavLink className="nav-link" to="/signin" onClick={closeMenu}>
+                      Sign in
+                    </NavLink>
+                    <Link
+                      className="btn btn-primary btn-sm px-3"
+                      to="/register"
+                      onClick={closeMenu}
+                    >
+                      Create account <span aria-hidden="true">↗</span>
+                    </Link>
+                  </>
+                )}
+              </div>
             </div>
           </nav>
         </div>

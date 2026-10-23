@@ -110,6 +110,54 @@ textarea {
   border-bottom: 1px solid var(--bs-border-color);
   min-height: 80px;
 }
+.topbar .navbar-collapse {
+  min-width: 0;
+}
+.topbar-nav,
+.topbar-actions,
+.topbar-account {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.topbar-nav {
+  margin-left: auto;
+  gap: 2rem;
+}
+.topbar-links {
+  align-items: center;
+  flex-shrink: 0;
+  gap: 1.5rem;
+}
+.topbar .topbar-nav .nav-link {
+  padding: 0.5rem 0;
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+.topbar-actions {
+  gap: 1.25rem;
+}
+.topbar-account {
+  gap: 0.75rem;
+}
+.topbar-name {
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.topbar-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 36px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.topbar-account .avatar {
+  flex-shrink: 0;
+}
 .brand {
   display: flex;
   align-items: center;
@@ -118,6 +166,7 @@ textarea {
   font-size: 1.25rem;
   letter-spacing: -0.5px;
   color: #24272b;
+  flex-shrink: 0;
 }
 .brand:hover {
   color: #24272b;
@@ -501,12 +550,37 @@ textarea {
     padding: 2.5rem;
   }
 }
+@media (max-width: 991px) {
+  .topbar .navbar-collapse {
+    padding: 1rem 0;
+  }
+  .topbar-nav,
+  .topbar-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .topbar-links {
+    align-items: stretch;
+    gap: 0.25rem;
+  }
+  .topbar .topbar-nav .nav-link {
+    padding: 0.6rem 0.25rem;
+  }
+  .topbar-actions {
+    border-top: 1px solid var(--bs-border-color);
+    padding-top: 1rem;
+  }
+  .topbar-account {
+    padding-block: 0.25rem;
+  }
+  .topbar-name {
+    max-width: none;
+  }
+}
 @media (max-width: 767px) {
   .topbar {
     min-height: 70px;
-  }
-  .topbar .navbar-collapse {
-    padding: 1rem 0;
   }
   .workspace.has-sidebar {
     grid-template-columns: 1fr;
