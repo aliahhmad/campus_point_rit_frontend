@@ -147,9 +147,6 @@ export function Layout() {
               <NavLink to="/profile" className="nav-link" onClick={closeMenu}>
                 <span aria-hidden="true">◉</span> My profile
               </NavLink>
-              <NavLink to="/api-keys" className="nav-link" onClick={closeMenu}>
-                <span aria-hidden="true">⌘</span> API keys
-              </NavLink>
               {user.isAdmin && (
                 <>
                   <div className="eyebrow mt-4 mb-2">ADMINISTRATION</div>

@@ -26,10 +26,8 @@ Open http://localhost:5173. The existing Vite proxy forwards `/api/*` to
 | `/requests`                 | Browse and filter campus requests                                      |
 | `/requests/new`             | Create a moderated campus request                                      |
 | `/requests/:requestId`      | Read request responses, submit an answer, or accept one on your own post |
-| `/api-keys`                 | Create, rename, activate/deactivate, and delete personal API keys      |
 | `/admin/users`              | Paginated user list, search, editing, promotion, banning, and deletion |
 | `/admin/conflicted-requests` | Admin shortcut to conflicted requests using the existing request list |
-| `/admin/users/:userId/keys` | List, rename, activate/deactivate, and delete another user's keys      |
 
 `/` opens the profile or redirects to sign in. Unknown routes display a 404 page.
 Admin routes require an administrator account. Their actions remain protected by
@@ -96,8 +94,6 @@ new responses; already-started operations can still be checked or retried.
   backend does not validate this field as a current-password challenge; it
   saves it as the account password. The separate password form requires a
   matching confirmation.
-- API key secrets appear only immediately after creation and are never persisted
-  by this UI. Admin endpoints cannot create keys for another user.
 - Email delivery requires the backend's SMTP configuration. Set the backend's
   `API_TITLE=CampusPoint` and `FRONTEND_URL=http://localhost:5173` for local use.
   Verification and password reset emails open this frontend at `/verify?code=…`

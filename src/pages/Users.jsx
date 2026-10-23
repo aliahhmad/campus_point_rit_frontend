@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useAuth } from "../auth/context";
 import { api } from "../lib/api";
 import { useResource } from "../lib/hooks";
@@ -26,12 +26,12 @@ const actionCopy = {
   ],
   "make-admin": [
     "Make administrator?",
-    "This user will be able to manage other users and their API keys.",
+    "This user will be able to manage other users and resolve conflicted requests.",
     "Make administrator",
   ],
   delete: [
     "Delete user?",
-    "The account and its API keys will be permanently deleted. This cannot be undone.",
+    "The account will be permanently deleted. This cannot be undone.",
     "Delete user",
   ],
 };
@@ -332,13 +332,6 @@ function UserResults({ path, page, term, onPage, onAction, currentUserId }) {
                         >
                           Edit
                         </button>
-                        <Link
-                          className="btn btn-sm btn-outline-secondary"
-                          to={`/admin/users/${account.id}/keys`}
-                          aria-label={`API keys for ${account.email}`}
-                        >
-                          API keys
-                        </Link>
                         {account.role !== "admin" && (
                           <button
                             className="btn btn-sm btn-outline-secondary"

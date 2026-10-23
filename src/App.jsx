@@ -9,7 +9,6 @@ import {
   VerifyEmail,
 } from "./pages/Authentication";
 import Profile from "./pages/Profile";
-import ApiKeys from "./pages/ApiKeys";
 import Users from "./pages/Users";
 import Requests from "./pages/Requests";
 import CreateRequest from "./pages/CreateRequest";
@@ -32,17 +31,12 @@ export default function App() {
               <Route path="requests/new" element={<CreateRequest />} />
               <Route path="requests/:requestId" element={<RequestDetail />} />
               <Route path="profile" element={<Profile />} />
-              <Route path="api-keys" element={<ApiKeys />} />
               <Route element={<ProtectedRoute admin />}>
                 <Route
                   path="admin/conflicted-requests"
                   element={<Requests conflictedOnly />}
                 />
                 <Route path="admin/users" element={<Users />} />
-                <Route
-                  path="admin/users/:userId/keys"
-                  element={<ApiKeys admin />}
-                />
               </Route>
             </Route>
             <Route
