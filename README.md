@@ -28,11 +28,20 @@ Open http://localhost:5173. The existing Vite proxy forwards `/api/*` to
 | `/requests/:requestId`      | Read request responses, submit an answer, or accept one on your own post |
 | `/api-keys`                 | Create, rename, activate/deactivate, and delete personal API keys      |
 | `/admin/users`              | Paginated user list, search, editing, promotion, banning, and deletion |
+| `/admin/conflicted-requests` | Admin shortcut to conflicted requests using the existing request list |
 | `/admin/users/:userId/keys` | List, rename, activate/deactivate, and delete another user's keys      |
 
 `/` opens the profile or redirects to sign in. Unknown routes display a 404 page.
 Admin routes require an administrator account. Their actions remain protected by
 backend authorization.
+
+Administrators have a **Conflicted requests** link under **Administration**.
+The page reuses the normal request list and `GET /requests` API, always applying
+`status=conflicted`. Search, location filters, pagination, and automatic refresh
+work as on the main list. Clicking a request opens its normal detail page;
+returning preserves the admin shortcut and filters. The shortcut route and
+navigation are restricted to administrators, while the API retains its existing
+request visibility rules.
 
 Request cards and the creation confirmation link to individual request pages.
 Detail pages load `GET /requests/{id}` directly, so links also work after reload.

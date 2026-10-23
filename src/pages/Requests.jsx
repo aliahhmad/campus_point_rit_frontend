@@ -17,12 +17,16 @@ function label(value) {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-export default function Requests() {
+export default function Requests({ conflictedOnly = false }) {
   const { user } = useAuth();
   const [params, setParams] = useSearchParams();
   const locations = useResource("/locations");
-  const { data, loading, error, reload } = useResource(`/requests?${params}`);
+  const query = new URLSearchParams(params);
+  if (conflictedOnly) query.set("status", "conflicted");
+  const { data, loading, error, reload } = useResource(`/requests?${query}`);
   const page = data?.page || Number(params.get("page")) || 1;
+  const listPath = conflictedOnly ? "/admin/conflicted-requests" : "/requests";
+  const from = `${listPath}${params.size ? `?${params}` : ""}`;
 
   useEffect(() => {
     const timer = setInterval(() => reload({ background: true }), 5000);
@@ -46,12 +50,19 @@ export default function Requests() {
   return (
     <>
       <PageHeading
-        title="Campus requests"
-        description="Browse campus questions and keep track of your own submissions."
+        eyebrow={conflictedOnly ? "ADMINISTRATION" : "YOUR WORKSPACE"}
+        title={conflictedOnly ? "Conflicted requests" : "Campus requests"}
+        description={
+          conflictedOnly
+            ? "Browse requests that expired with visible responses and no accepted answer."
+            : "Browse campus questions and keep track of your own submissions."
+        }
       >
-        <Link to="/requests/new" className="btn btn-primary">
-          + New request
-        </Link>
+        {!conflictedOnly && (
+          <Link to="/requests/new" className="btn btn-primary">
+            + New request
+          </Link>
+        )}
       </PageHeading>
       <Panel className="mb-4">
         <form
@@ -110,7 +121,8 @@ export default function Requests() {
             <select
               id="request-status"
               className="form-select"
-              value={params.get("status") || ""}
+              value={query.get("status") || ""}
+              disabled={conflictedOnly}
               onChange={(event) => filter("status", event.target.value)}
             >
               <option value="">All statuses</option>
@@ -167,18 +179,20 @@ export default function Requests() {
             <Panel>
               <div className="text-center py-4">
                 <h2 className="h5">
-                  {params.get("status") === "conflicted"
+                  {query.get("status") === "conflicted"
                     ? "No conflicted requests found"
                     : "No requests found"}
                 </h2>
                 <p className="text-secondary">
-                  {params.get("status") === "conflicted"
+                  {query.get("status") === "conflicted"
                     ? "Requests that expire with visible responses and no accepted answer appear here."
                     : "Try different filters or ask a new campus question."}
                 </p>
-                <Link to="/requests/new" className="btn btn-primary">
-                  Create a request
-                </Link>
+                {!conflictedOnly && (
+                  <Link to="/requests/new" className="btn btn-primary">
+                    Create a request
+                  </Link>
+                )}
               </div>
             </Panel>
           ) : (
@@ -207,9 +221,7 @@ export default function Requests() {
                     <h2 className="h5 text-break">
                       <Link
                         to={`/requests/${request.id}`}
-                        state={{
-                          from: `/requests${params.size ? `?${params}` : ""}`,
-                        }}
+                        state={{ from }}
                         className="request-title-link"
                       >
                         {request.title}
@@ -241,9 +253,7 @@ export default function Requests() {
                     </p>
                     <Link
                       to={`/requests/${request.id}`}
-                      state={{
-                        from: `/requests${params.size ? `?${params}` : ""}`,
-                      }}
+                      state={{ from }}
                       className="btn btn-sm btn-outline-secondary mt-3"
                     >
                       View request &amp; responses{" "}

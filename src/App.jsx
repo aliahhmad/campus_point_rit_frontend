@@ -34,6 +34,10 @@ export default function App() {
               <Route path="profile" element={<Profile />} />
               <Route path="api-keys" element={<ApiKeys />} />
               <Route element={<ProtectedRoute admin />}>
+                <Route
+                  path="admin/conflicted-requests"
+                  element={<Requests conflictedOnly />}
+                />
                 <Route path="admin/users" element={<Users />} />
                 <Route
                   path="admin/users/:userId/keys"

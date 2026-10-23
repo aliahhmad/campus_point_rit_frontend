@@ -296,11 +296,24 @@ function RequestPage({ requestId }) {
       ? requestedPage
       : 1;
   const from = location.state?.from;
+  const fromAdminConflicts =
+    user.isAdmin &&
+    typeof from === "string" &&
+    (from === "/admin/conflicted-requests" ||
+      from.startsWith("/admin/conflicted-requests?"));
   const backTo =
     typeof from === "string" &&
-    (from === "/requests" || from.startsWith("/requests?"))
+    (from === "/requests" ||
+      from.startsWith("/requests?") ||
+      fromAdminConflicts)
       ? from
       : "/requests";
+  const backLabel = fromAdminConflicts
+    ? "Conflicted requests"
+    : "Campus requests";
+  const backButton = fromAdminConflicts
+    ? "Back to conflicted requests"
+    : "Back to requests";
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -332,7 +345,7 @@ function RequestPage({ requestId }) {
 
   const breadcrumb = (
     <nav aria-label="Breadcrumb" className="mb-4 small">
-      <Link to={backTo}>Campus requests</Link>
+      <Link to={backTo}>{backLabel}</Link>
       <span className="text-secondary mx-2" aria-hidden="true">
         /
       </span>
@@ -359,7 +372,7 @@ function RequestPage({ requestId }) {
         />
         <ResourceError error={error} retry={reload} />
         <Link to={backTo} className="btn btn-outline-secondary">
-          Back to requests
+          {backButton}
         </Link>
       </>
     );
@@ -380,7 +393,7 @@ function RequestPage({ requestId }) {
         description={`${request.location_name} · ${request.building_code}`}
       >
         <Link to={backTo} className="btn btn-outline-secondary">
-          ← Back to requests
+          ← {backButton}
         </Link>
       </PageHeading>
       <div className="row g-4 align-items-start">

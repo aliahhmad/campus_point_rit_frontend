@@ -76,7 +76,11 @@ export function Layout() {
         <div className="container-fluid px-3 px-lg-4">
           <Link className="navbar-brand brand" to="/" onClick={closeMenu}>
             <span className="brand-mark" aria-hidden="true">
-              <img src="/campuspoint.svg" alt="CampusPoint" className="brand-icon" />
+              <img
+                src="/campuspoint.svg"
+                alt="CampusPoint"
+                className="brand-icon"
+              />
             </span>
             CampusPoint<span className="brand-campus">RIT</span>
           </Link>
@@ -155,6 +159,13 @@ export function Layout() {
                     onClick={closeMenu}
                   >
                     <span aria-hidden="true">▦</span> Manage users
+                  </NavLink>
+                  <NavLink
+                    to="/admin/conflicted-requests"
+                    className="nav-link"
+                    onClick={closeMenu}
+                  >
+                    <span aria-hidden="true">⚑</span> Conflicted requests
                   </NavLink>
                 </>
               )}
