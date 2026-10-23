@@ -279,6 +279,9 @@ function UserResults({ path, page, term, onPage, onAction, currentUserId }) {
                   <th scope="col">Role</th>
                   <th scope="col">Status</th>
                   <th scope="col" className="text-end">
+                    Violations
+                  </th>
+                  <th scope="col" className="text-end">
                     Actions
                   </th>
                 </tr>
@@ -320,6 +323,9 @@ function UserResults({ path, page, term, onPage, onAction, currentUserId }) {
                           </span>
                         )}
                       </div>
+                    </td>
+                    <td className="text-end fw-semibold">
+                      {(account.violations ?? 0).toLocaleString()}
                     </td>
                     <td>
                       <div className="d-flex justify-content-end gap-2 flex-wrap">
