@@ -1,6 +1,8 @@
 const STORAGE_KEY = "campuspoint.session";
-const API_BASE = (import.meta.env.VITE_API_BASE_URL || "/api").replace(
-  /\/$/,
+// Leave the URL blank to use the local Vite proxy. Set it before building
+// to send requests directly to a hosted backend instead.
+const API_BASE = (import.meta.env.VITE_API_BASE_URL?.trim() || "/api").replace(
+  /\/+$/,
   "",
 );
 let refreshRequest;
