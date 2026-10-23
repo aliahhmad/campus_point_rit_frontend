@@ -173,7 +173,7 @@ export default function Requests() {
                 </h2>
                 <p className="text-secondary">
                   {params.get("status") === "conflicted"
-                    ? "Requests that expire with responses and no accepted answer appear here."
+                    ? "Requests that expire with visible responses and no accepted answer appear here."
                     : "Try different filters or ask a new campus question."}
                 </p>
                 <Link to="/requests/new" className="btn btn-primary">

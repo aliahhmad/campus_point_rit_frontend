@@ -40,9 +40,10 @@ Requests and responses refresh every five seconds. Response pagination is stored
 in the page URL, and returning to the feed preserves its filters.
 
 The status filter includes **Conflicted**, sent as `status=conflicted` to the API.
-List cards and detail pages share a yellow **Conflicted** badge and explain that
-the request expired with responses and no accepted answer, so its reward remains
-held. Existing responses stay readable, while new answers and acceptance are
+List cards and detail pages share a yellow **Conflicted** badge. Detail pages
+explain that the request expired with visible responses and no accepted answer,
+so its reward remains held. Hidden and pending responses do not block expiry
+refunds. Existing responses stay readable, while new answers and acceptance are
 closed. The UI uses the backend's stored status to identify conflicts; a passed
 deadline alone does not imply a conflict or confirm a refund.
 

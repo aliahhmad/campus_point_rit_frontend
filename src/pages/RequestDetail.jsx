@@ -406,10 +406,10 @@ function RequestPage({ requestId }) {
           {request.status === "conflicted" && (
             <Alert type="warning">
               <strong className="d-block mb-1">Conflicted request</strong>
-              This request expired with responses and no accepted answer. Its{" "}
-              {request.reward_points}-point reward remains held. You can no
-              longer post or accept responses. Existing responses are still
-              available to read.
+              This request expired with visible responses and no accepted
+              answer. Its {request.reward_points}-point reward remains held. You
+              can no longer post or accept responses. Existing responses are
+              still available to read.
             </Alert>
           )}
           {request.moderation_status !== "visible" && (

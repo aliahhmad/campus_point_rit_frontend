@@ -317,8 +317,9 @@ export default function CreateRequest() {
                         submitting.
                       </p>
                       <p className="small mb-0">
-                        If no one responds before expiry, your points are
-                        refunded. If responses exist but none is accepted, the
+                        If there are no visible responses at expiry, your points
+                        are refunded. Hidden and pending responses do not count.
+                        If visible responses exist but none is accepted, the
                         request becomes conflicted and the points stay held.
                       </p>
                     </Alert>
