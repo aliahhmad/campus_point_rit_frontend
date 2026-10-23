@@ -102,7 +102,9 @@ require working backend SMTP settings.
 
 | Route                                 | Purpose                                                                      | Access        |
 | ------------------------------------- | ---------------------------------------------------------------------------- | ------------- |
-| `/login`, `/register`, `/verify`      | Sign in, register, and verify email                                          | Public        |
+| `/`                                   | Project homepage, how it works, and technology overview                       | Public        |
+| `/signin`, `/register`, `/verify`     | Sign in, register, and verify email                                          | Public        |
+| `/login`                              | Redirect to `/signin` for existing links                                     | Public        |
 | `/forgot-password`, `/reset-password` | Request and complete a password reset                                        | Public        |
 | `/profile`                            | Edit profile and password; view points and reputation                        | Signed in     |
 | `/requests`                           | Browse, search, and filter requests                                          | Signed in     |
@@ -111,7 +113,9 @@ require working backend SMTP settings.
 | `/admin/users`                        | Manage user accounts                                                         | Administrator |
 | `/admin/conflicted-requests`          | Browse conflicted requests and open their detail pages                       | Administrator |
 
-`/` opens the profile. Protected pages redirect signed-out visitors to login.
+`/` opens the public homepage, including for signed-in visitors. Protected pages
+redirect signed-out visitors to `/signin` and return them to their requested page
+after sign-in. The homepage links signed-in members to their workspace.
 The backend enforces permissions for every action.
 
 Creating a request holds five points for one hour. Requests cannot be edited

@@ -26,7 +26,7 @@ export function ProtectedRoute({ admin = false }) {
   if (!user)
     return (
       <Navigate
-        to="/login"
+        to="/signin"
         state={{ from: location.pathname + location.search }}
         replace
       />
@@ -51,15 +51,19 @@ export function Layout() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const isHomepage = location.pathname === "/";
+  const showSidebar = Boolean(user) && !isHomepage;
   useEffect(() => {
     const heading = document.querySelector("main h1");
-    document.title = `${heading?.textContent || "Your workspace"} | CampusPoint`;
+    document.title = isHomepage
+      ? "CampusPoint | Your campus. Your connection."
+      : `${heading?.textContent || "Your workspace"} | CampusPoint`;
     window.scrollTo(0, 0);
-  }, [location.pathname, user]);
+  }, [location.pathname, user, isHomepage]);
   function signOut() {
     logout();
     setOpen(false);
-    navigate("/login", { replace: true });
+    navigate("/signin", { replace: true });
   }
   function closeMenu() {
     setOpen(false);
@@ -100,8 +104,27 @@ export function Layout() {
             className={`collapse navbar-collapse ${open ? "show" : ""}`}
           >
             <div className="navbar-nav ms-auto align-items-md-center gap-2">
+              {isHomepage ? (
+                <>
+                  <a className="nav-link" href="#how-it-works" onClick={closeMenu}>
+                    How it works
+                  </a>
+                  <a className="nav-link me-md-3" href="#technology" onClick={closeMenu}>
+                    The technology
+                  </a>
+                </>
+              ) : (
+                <NavLink className="nav-link" to="/" onClick={closeMenu}>
+                  Home
+                </NavLink>
+              )}
               {user ? (
                 <>
+                  {isHomepage && (
+                    <Link className="btn btn-primary btn-sm" to="/requests" onClick={closeMenu}>
+                      Open workspace <span aria-hidden="true">↗</span>
+                    </Link>
+                  )}
                   <span className="small text-secondary me-md-3">
                     {user.first_name} {user.last_name}
                   </span>
@@ -117,7 +140,7 @@ export function Layout() {
                 </>
               ) : (
                 <>
-                  <NavLink className="nav-link" to="/login" onClick={closeMenu}>
+                  <NavLink className="nav-link" to="/signin" onClick={closeMenu}>
                     Sign in
                   </NavLink>
                   <Link
@@ -133,8 +156,8 @@ export function Layout() {
           </nav>
         </div>
       </header>
-      <div className={`workspace ${user ? "has-sidebar" : ""}`}>
-        {user && (
+      <div className={`workspace ${showSidebar ? "has-sidebar" : ""}`}>
+        {showSidebar && (
           <aside className="sidebar">
             <div className="eyebrow mb-3">WORKSPACE</div>
             <nav
@@ -180,7 +203,7 @@ export function Layout() {
         )}
         <main
           id="main-content"
-          className={user ? "workspace-main" : "public-main"}
+          className={isHomepage ? "landing-main" : user ? "workspace-main" : "public-main"}
         >
           <Outlet key={location.pathname} />
         </main>

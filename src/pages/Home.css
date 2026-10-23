@@ -1,0 +1,654 @@
+.landing-main {
+  min-width: 0;
+}
+
+.landing {
+  background: #fff;
+  color: #252b2a;
+}
+
+.home-container {
+  width: min(1160px, calc(100% - 5rem));
+  margin-inline: auto;
+}
+
+.home-hero {
+  background: #f8f5ef;
+  border-bottom: 1px solid #e9e5dc;
+  padding: 6rem 0 5rem;
+}
+
+.home-hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: center;
+  gap: 5rem;
+}
+
+.home-kicker,
+.home-section-label,
+.home-example-topline,
+.home-architecture-label {
+  font-size: 0.65rem;
+  font-weight: 750;
+  letter-spacing: 1.5px;
+  line-height: 1.7;
+}
+
+.home-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: #6b6258;
+  margin-bottom: 1.8rem;
+}
+
+.home-kicker-dot,
+.home-status-dot {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #c63c0d;
+}
+
+.home-intro h1 {
+  font-size: clamp(3.1rem, 5.5vw, 4.65rem);
+  font-weight: 750;
+  letter-spacing: -3.5px;
+  line-height: 1.07;
+  margin-bottom: 1.7rem;
+}
+
+.home-intro h1 > span {
+  color: #c63c0d;
+}
+
+.home-lead {
+  max-width: 470px;
+  color: #66665e;
+  font-size: 1.02rem;
+  line-height: 1.85;
+}
+
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.landing .btn-primary {
+  padding: 0.85rem 1.25rem;
+  font-size: 0.85rem;
+}
+
+.home-actions .btn > span,
+.home-cta .btn > span {
+  margin-left: 1.2rem;
+}
+
+.home-text-link {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #41473f;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.home-text-link:hover {
+  color: #b6350b;
+  text-decoration: underline;
+}
+
+.home-community-note {
+  font-size: 0.7rem;
+  color: #757269;
+  margin: 1.4rem 0 0;
+}
+
+.home-example {
+  position: relative;
+  padding: 1.6rem;
+  background: #ece9e0;
+  border: 1px solid #e2ded4;
+  border-radius: 18px;
+}
+
+.home-example-topline {
+  display: flex;
+  justify-content: space-between;
+  color: #726c60;
+  margin-bottom: 1.2rem;
+  font-size: 0.6rem;
+}
+
+.home-example-topline > span:last-child {
+  font-size: 1rem;
+}
+
+.home-request-preview,
+.home-answer-preview {
+  border: 1px solid #e4e4db;
+  border-radius: 10px;
+  padding: 1.5rem;
+  background: #fff;
+  box-shadow: 0 5px 15px #39352c05;
+}
+
+.home-preview-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+  font-size: 0.7rem;
+}
+
+.home-location {
+  color: #777368;
+}
+
+.home-location > span {
+  color: #c63c0d;
+  margin-right: 0.3rem;
+}
+
+.home-reward {
+  padding: 0.25rem 0.55rem;
+  color: #ad350e;
+  background: #fff0e8;
+  border-radius: 5px;
+  font-weight: 700;
+}
+
+.home-request-preview h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.7rem;
+}
+
+.home-request-preview p,
+.home-answer-preview p {
+  font-size: 0.8rem;
+  line-height: 1.8;
+  color: #6a6d66;
+}
+
+.home-request-bottom,
+.home-answer-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid #eeeee8;
+  font-size: 0.6rem;
+  color: #73786d;
+}
+
+.home-status-dot {
+  background: #667e50;
+  width: 5px;
+  height: 5px;
+  margin-right: 0.3rem;
+}
+
+.home-answer-connector {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  height: 34px;
+  padding-left: 1.6rem;
+  color: #8c9580;
+}
+
+.home-answer-connector > span {
+  width: 1px;
+  height: 100%;
+  background: #c7cbbd;
+}
+
+.home-answer-preview {
+  margin-left: 1.6rem;
+  border-color: #d9e2cf;
+  background: #fcfdf9;
+}
+
+.home-answer-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.9rem;
+}
+
+.home-answer-avatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  background: #e9eddf;
+  color: #526341;
+  border-radius: 50%;
+  font-size: 1.2rem;
+}
+
+.home-answer-heading strong,
+.home-answer-heading div > span {
+  display: block;
+  font-size: 0.7rem;
+}
+
+.home-answer-heading div > span {
+  margin-top: 0.15rem;
+  font-size: 0.6rem;
+  color: #7b8073;
+}
+
+.home-answer-bottom {
+  color: #55713d;
+}
+
+.home-answer-bottom strong > span {
+  margin-inline: 0.25rem;
+}
+
+.home-example-caption {
+  margin: 1.3rem 0 0;
+  font-size: 0.65rem;
+  color: #6e6a60;
+  text-align: center;
+}
+
+.home-section-label {
+  color: #ab421e;
+  margin-bottom: 1.1rem;
+}
+
+.home-about {
+  padding: 4rem 0;
+  border-bottom: 1px solid #e8e9e3;
+}
+
+.home-about-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 3rem;
+}
+
+.home-about .home-section-label {
+  padding-top: 0.5rem;
+}
+
+.landing section:not(.home-hero) h2 {
+  font-size: clamp(1.7rem, 3vw, 2.25rem);
+  letter-spacing: -1.2px;
+  line-height: 1.25;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.home-about p,
+.home-tech-intro {
+  max-width: 660px;
+  color: #6b7068;
+  font-size: 0.9rem;
+  line-height: 1.9;
+  margin-bottom: 0;
+}
+
+.home-how,
+.home-technology {
+  padding: 5rem 0;
+  scroll-margin-top: 2rem;
+}
+
+.home-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2.75rem;
+  padding: 0;
+  margin: 2.75rem 0 1.75rem;
+  list-style: none;
+}
+
+.home-steps li {
+  border-top: 1px solid #dfe3d9;
+  padding-top: 1.5rem;
+}
+
+.home-step-number {
+  display: block;
+  color: #c63c0d;
+  font-family: ui-monospace, monospace;
+  font-size: 0.8rem;
+  margin-bottom: 1.4rem;
+}
+
+.home-steps h3 {
+  font-size: 1.15rem;
+  font-weight: 650;
+  letter-spacing: -0.4px;
+  margin-bottom: 0.8rem;
+}
+
+.home-steps p {
+  color: #6b7068;
+  font-size: 0.85rem;
+  line-height: 1.9;
+  margin-bottom: 0;
+}
+
+.home-points-note {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  background: #f5f6f1;
+  padding: 1rem 1.25rem;
+  border-radius: 6px;
+  color: #6b7060;
+  font-size: 0.72rem;
+  line-height: 1.8;
+  margin-bottom: 0;
+}
+
+.home-points-note > span {
+  font-size: 1.3rem;
+}
+
+.home-technology {
+  background: #f6f7f3;
+  border-block: 1px solid #e8e9e3;
+}
+
+.home-technology-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.home-tech-list {
+  margin: 1.8rem 0 0;
+}
+
+.home-tech-list > div {
+  padding: 1rem 0;
+  border-top: 1px solid #dfe3d9;
+}
+
+.home-tech-list dt {
+  font-size: 0.85rem;
+  margin-bottom: 0.35rem;
+}
+
+.home-tech-list dd {
+  font-size: 0.8rem;
+  line-height: 1.8;
+  color: #6b7068;
+  margin: 0;
+}
+
+.home-architecture {
+  background: #252e2b;
+  color: #f4f5ed;
+  padding: 2rem;
+  border-radius: 14px;
+}
+
+.home-architecture-label {
+  color: #b1bcb0;
+  font-size: 0.6rem;
+  margin-bottom: 2rem;
+}
+
+.home-architecture-client {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #596159;
+  border-radius: 7px;
+  background: #313b35;
+}
+
+.home-architecture-client > span:first-child {
+  font-size: 1.5rem;
+  color: #ec9b77;
+}
+
+.home-architecture-client strong,
+.home-architecture-client div > span,
+.home-architecture-service > strong,
+.home-architecture-service > span {
+  display: block;
+}
+
+.home-architecture-client strong {
+  font-size: 0.85rem;
+}
+
+.home-architecture-client div > span {
+  font-size: 0.65rem;
+  color: #b3bdae;
+  margin-top: 0.2rem;
+}
+
+.home-architecture-tag {
+  margin-left: auto;
+  font-family: ui-monospace, monospace;
+  font-size: 0.65rem;
+  color: #b3bdae;
+}
+
+.home-architecture-line {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  height: 60px;
+  padding-left: 22%;
+  color: #acbca1;
+  font-size: 1.7rem;
+}
+
+.home-architecture-line > span {
+  font: 0.55rem ui-monospace, monospace;
+  letter-spacing: 1px;
+}
+
+.home-architecture-services {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 25px minmax(0, 1fr);
+  align-items: center;
+}
+
+.home-architecture-service {
+  padding: 1rem 0.8rem 0.8rem;
+  background: #303b33;
+  border: 1px solid #626e5e;
+  border-radius: 7px;
+}
+
+.home-architecture-service > .home-service-number {
+  font: 0.55rem ui-monospace, monospace;
+  color: #f1ad8e;
+  margin-bottom: 1.2rem;
+}
+
+.home-architecture-service > strong {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+
+.home-architecture-service > span {
+  font-size: 0.58rem;
+  color: #bec8b7;
+}
+
+.home-service-link {
+  text-align: center;
+  color: #ec9b77;
+}
+
+.home-database {
+  border-top: 1px dashed #77856c;
+  margin-top: 1.4rem;
+  padding-top: 1rem;
+  font-size: 0.7rem;
+}
+
+.home-database > span {
+  display: block;
+  color: #bec8b7;
+  font-size: 0.56rem;
+  margin-top: 0.3rem;
+}
+
+.home-architecture-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  border-top: 1px solid #4a574b;
+  padding-top: 1.4rem;
+  margin-top: 1.8rem;
+  color: #b3bdae;
+  font-size: 0.6rem;
+}
+
+.home-architecture-footer > span {
+  color: #ec9b77;
+  font-size: 1rem;
+}
+
+.home-cta {
+  padding: 4rem 0;
+  background: #fbf0e6;
+}
+
+.home-cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.home-cta .home-section-label {
+  margin-bottom: 0.8rem;
+}
+
+.home-cta p {
+  color: #78695b;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.home-cta .btn {
+  flex-shrink: 0;
+}
+
+@media (max-width: 1050px) {
+  .home-hero-grid,
+  .home-technology-grid {
+    gap: 2.5rem;
+  }
+
+  .home-example,
+  .home-architecture {
+    padding: 1.25rem;
+  }
+
+  .home-intro h1 {
+    letter-spacing: -2.5px;
+  }
+
+  .home-steps {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .home-container {
+    width: calc(100% - 2.5rem);
+    max-width: 560px;
+  }
+
+  .home-hero {
+    padding: 3.5rem 0 3rem;
+  }
+
+  .home-hero-grid,
+  .home-about-grid,
+  .home-technology-grid,
+  .home-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .home-hero-grid {
+    gap: 3rem;
+  }
+
+  .home-intro h1 {
+    font-size: clamp(3rem, 11vw, 4.25rem);
+  }
+
+  .home-lead {
+    font-size: 0.95rem;
+  }
+
+  .home-about,
+  .home-how,
+  .home-technology,
+  .home-cta {
+    padding: 3rem 0;
+  }
+
+  .home-about-grid {
+    gap: 0;
+  }
+
+  .home-steps {
+    margin-top: 2rem;
+  }
+
+  .home-step-number {
+    margin-bottom: 0.8rem;
+  }
+
+  .home-cta-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 380px) {
+  .home-container {
+    width: calc(100% - 2rem);
+  }
+
+  .home-kicker {
+    font-size: 0.55rem;
+    letter-spacing: 1px;
+  }
+
+  .home-request-preview,
+  .home-answer-preview {
+    padding: 1rem;
+  }
+
+  .home-answer-preview {
+    margin-left: 0.65rem;
+  }
+
+  .home-architecture {
+    padding: 1rem;
+  }
+
+  .home-architecture-service {
+    padding-inline: 0.6rem;
+  }
+}

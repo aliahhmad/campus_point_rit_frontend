@@ -1,4 +1,4 @@
-import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthProvider";
 import { Layout, ProtectedRoute } from "./components/Layout";
 import {
@@ -13,6 +13,18 @@ import Users from "./pages/Users";
 import Requests from "./pages/Requests";
 import CreateRequest from "./pages/CreateRequest";
 import RequestDetail from "./pages/RequestDetail";
+import Home from "./pages/Home";
+
+function LegacySignInRedirect() {
+  const location = useLocation();
+  return (
+    <Navigate
+      to={`/signin${location.search}${location.hash}`}
+      state={location.state}
+      replace
+    />
+  );
+}
 
 export default function App() {
   return (
@@ -20,8 +32,9 @@ export default function App() {
       <AuthProvider>
         <Routes>
           <Route element={<Layout />}>
-            <Route index element={<Navigate to="/profile" replace />} />
-            <Route path="login" element={<Login />} />
+            <Route index element={<Home />} />
+            <Route path="signin" element={<Login />} />
+            <Route path="login" element={<LegacySignInRedirect />} />
             <Route path="register" element={<Register />} />
             <Route path="verify" element={<VerifyEmail />} />
             <Route path="forgot-password" element={<ForgotPassword />} />

@@ -216,7 +216,7 @@ export function Register() {
         </fieldset>
       </form>
       <p className="small text-secondary mt-4 mb-0">
-        Already have an account? <Link to="/login">Sign in</Link>
+        Already have an account? <Link to="/signin">Sign in</Link>
       </p>
     </AuthFrame>
   );
@@ -283,7 +283,7 @@ export function ForgotPassword() {
           </fieldset>
         </form>
       )}
-      <Link className="d-inline-block mt-4 small" to="/login">
+      <Link className="d-inline-block mt-4 small" to="/signin">
         ← Back to sign in
       </Link>
     </AuthFrame>
@@ -313,7 +313,7 @@ export function ResetPassword() {
         auth: false,
       });
       logout();
-      navigate("/login", {
+      navigate("/signin", {
         state: {
           message:
             "Your password has been reset. Sign in with your new password.",
@@ -366,7 +366,7 @@ export function ResetPassword() {
       <p className="small mt-4 text-secondary mb-0">
         Link expired? <Link to="/forgot-password">Request a new one</Link>
       </p>
-      <Link className="d-inline-block mt-3 small" to="/login">
+      <Link className="d-inline-block mt-3 small" to="/signin">
         ← Back to sign in
       </Link>
     </AuthFrame>
@@ -437,7 +437,7 @@ export function VerifyEmail() {
       ) : result.success ? (
         <>
           <Alert type="success">Email verified successfully.</Alert>
-          <Link className="btn btn-primary w-100" to="/login">
+          <Link className="btn btn-primary w-100" to="/signin">
             Continue to sign in →
           </Link>
         </>
@@ -461,7 +461,7 @@ export function VerifyEmail() {
             The link expires after 10 minutes. Check your spam folder if the
             email hasn’t arrived.
           </p>
-          <Link className="small" to="/login">
+          <Link className="small" to="/signin">
             ← Back to sign in
           </Link>
         </>
