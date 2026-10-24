@@ -168,16 +168,12 @@ or provide a separate reverse proxy when testing the production build.
    deployment environment you will use, such as Production and Preview.
    A local `.env.local` file is not uploaded through Git. Changes require a
    new deployment. See [Vercel environment variables](https://vercel.com/docs/environment-variables/managing-environment-variables).
-4. Before deploying, create `vercel.json` next to `package.json` with the SPA
-   fallback below. This file is not currently included. The rewrite lets direct
-   visits and refreshes on paths such as `/requests/3` load the React application
+4. Keep the included [vercel.json](vercel.json) next to `package.json`. Its SPA
+   fallback lets direct visits and refreshes on paths such as `/requests/3` load the React application
    instead of returning a hosting 404. See [Vercel's Vite routing guide](https://vercel.com/docs/frameworks/frontend/vite#using-vite-to-make-spas).
 
-   ```json
-   {
-     "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-   }
-   ```
+   Commit and deploy this file with the frontend. Existing deployments need a
+   new deployment for the routing change to take effect.
 
 5. Configure the backend's `CORS_ORIGINS` and `FRONTEND_URL` for the deployed
    frontend address, then confirm the backend is reachable before testing login
